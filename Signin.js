@@ -1,10 +1,10 @@
 // Initialize Firebase
 import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
+import { firebaseApp, authProvider } from "./firebaseConfig";
+
 
 export default function Signin() {
 
-    //setup credentials
-    const authProvider = new GoogleAuthProvider() 
     const auth = getAuth();
 
     signInWithPopup(auth, authProvider)

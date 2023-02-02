@@ -22,6 +22,4 @@ const firebaseConfig = {
   
 // Return app and provider objects for use in other components
 export const firebaseApp = initializeApp(firebaseConfig);
-export const authProvider = new GoogleAuthProvider() //used for signin
-
 

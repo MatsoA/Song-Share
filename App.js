@@ -17,10 +17,12 @@ export default function App() {
 
   //Object to manage info about current user
   //Expected to be populated by Signin
+  //TODO: handle uid
   const [userDetails, setUserDetails] = useState({
     userName: "",
     email: "",
-    profilePicture: ""
+    profilePicture: "",
+    uid: 0
   });
 
   return (

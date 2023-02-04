@@ -1,8 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Image } from 'react-native';
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { firebaseApp, authProvider } from "./firebaseConfig";
+import { useState, useEffect } from "react";
 import Signin from "./Signin"
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -14,13 +15,23 @@ import Signin from "./Signin"
 
 export default function App() {
 
-  //calling Signin component as a function (since it's exported as one). Triggers signin popup
-  Signin();
+  //Object to manage info about current user
+  //Expected to be populated by Signin
+  const [userDetails, setUserDetails] = useState({
+    userName: "",
+    email: "",
+    profilePicture: ""
+  });
 
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
       <StatusBar style="auto" />
+      <Signin userDetails = {userDetails} setUserDetails = {setUserDetails}/>
+      <Text>
+        Username: {userDetails.userName} {"\n"}
+        Email: {userDetails.email}
+      </Text>
+      <Image style = {styles.profilePicture} source = {{uri: userDetails.profilePicture}}/>
     </View>
   );
 }
@@ -32,4 +43,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+
+  profilePicture: {
+    width: 50,
+    height: 50,
+  }
 });

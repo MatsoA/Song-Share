@@ -1,10 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, Button } from 'react-native';
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { firebaseApp, authProvider } from "./firebaseConfig";
 import { useState, useEffect } from "react";
 import Signin from "./Signin"
+import MainPage from './MainPage';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
@@ -16,62 +17,58 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 const Stack = createNativeStackNavigator();
 
+
 export default function App() {
 
-  //Object to manage info about current user
-  //Expected to be populated by Signin
-  //TODO: handle uid
   const [userDetails, setUserDetails] = useState({
     userName: "",
     email: "",
     profilePicture: "",
     uid: 0
   });
+  
+  
+  
+  //component for signin button
+  //Signin is responsible for switching to main page
+  const SigninPage = ({navigation, route}) => {
+    return (
+      <Button title = "Sign In" onPress={() => {
+        Signin(userDetails, setUserDetails, navigation)
+      }}> Sign In </Button>
+    )
+  }
+
+  //Function to call MainPage component. Done this way to correctly pass userDetails
+  const SwitchToMain = ({navigation, route}) => {
+    return(
+      <MainPage userDetails={ userDetails } />
+    )
+ }
 
   return (
 
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen
           name="signup"
-          component={signupButton}
+          component= {SigninPage}
           options={{title: "Welcome"}}
         />
         <Stack.Screen
-          name="login"
-          component={loginScreen}
+          name="main"
+          component={SwitchToMain}
+          options={{title: "Song Share"}}
         />
         
       </Stack.Navigator>
     </NavigationContainer>
+
+    
   );
 }
 
-const signupButton = ({navigation}) => {
-  return (
-    <Button
-      title="Sign up"
-      onPress={() =>
-        navigation.navigate('login')
-      }
-    />
-  );
-}
 
-const loginScreen = ({navigation, route}) => {
-  return(
-    <View style={styles.container}>
-        <StatusBar style="auto" />
-        <Signin userDetails = {userDetails} setUserDetails = {setUserDetails}/>
-        <Text>
-          Username: {userDetails.userName} {"\n"}
-          Email: {userDetails.email}
-        </Text>
-        <Image style = {styles.profilePicture} source = {{uri: userDetails.profilePicture}}/>
-      </View>
-  );
-}
 
 const styles = StyleSheet.create({
   container: {

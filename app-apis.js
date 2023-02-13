@@ -38,7 +38,7 @@ fields is of the following format:
 
 */
 function firebaseGet(projectId, databaseId, documentPath, fields){
-    return fetch(`https://firestore.googleapis.com/${firebaseVersion}/projects/${projectId}/databases/${databaseId}/documents/${documentPath}?mask=${fields}`,
+    return fetch(`https://firestore.googleapis.com/${firebaseVersion}/projects/${projectId}/databases/${databaseId}/documents/${documentPath}?mask=${encodeURIComponent(fields)}`,
     {
         method: 'GET',
         headers: {
